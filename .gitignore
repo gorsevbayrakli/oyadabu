@@ -1,0 +1,6 @@
+node_modules/
+build/
+ios/App/Pods/
+ios/App/App/public/
+.env
+.env.local
