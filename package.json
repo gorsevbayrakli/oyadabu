@@ -2,6 +2,7 @@
   "name": "oyadabu",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@capacitor/cli": "^8.3.0",
     "@capacitor/core": "^8.3.0",
