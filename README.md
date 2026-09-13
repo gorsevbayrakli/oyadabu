@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# VeYa
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+VeYa is a Turkish-language AI communication coach: it helps you make sense of
+confusing conversations and work out what to say next.
 
-## Available Scripts
+This repo holds the React web app, packaged for iOS with Capacitor.
 
-In the project directory, you can run:
+## Running it
 
-### `npm start`
+```bash
+npm install
+npm start          # dev server on http://localhost:3000
+npm test           # test suite
+npm run build      # production bundle into build/
+npx cap sync ios   # copy the bundle into the Xcode project
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+CI (`codemagic.yaml`) runs build → `cap sync ios` → IPA → TestFlight on pushes
+to `main`.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How it is put together
 
-### `npm test`
+| Path | What lives there |
+| --- | --- |
+| `src/App.js` | Route table and screen switch |
+| `src/veya/store.js` | App state + `localStorage` persistence, and the stack navigator |
+| `src/veya/data.js` | Every string and seed record, lifted from the design |
+| `src/veya/components/` | `Screen` frame, `TabBar`, and the UI primitives in `ui.js` |
+| `src/veya/screens/` | One module per screen |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Design tokens live in `tailwind.config.js` under the `veya` colour key
+(`bg #0d1117`, `surface #1a1e24`, `border #1f2530`, `ink #f9f9f9`,
+`muted #a0b3c1`, `primary #d55e2d`, `onPrimary #050810`). Headings use Fredoka,
+body copy uses Nunito; both are self-hosted in `public/fonts/` so the packaged
+app renders correctly with no network.
 
-### `npm run build`
+Icons come from `lucide-react`, which is the same library the design's icons
+were drawn from, so the glyphs match one-for-one.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screens
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+All 27 frames from the Figma file are implemented:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Onboarding** — splash, sign-up, goals (1/7), relationship (2/7), needs
+  (3/7), coach style (5/7), privacy (6/7), notifications (son adım)
+- **Core** — Bugün, Sohbetler, Konuşma, Koçunla konuş, Ne analiz edelim?,
+  Ne arıyorsun?, Sende tekrar edenler, Yansıma, Günlük yansıma
+- **Profile** — Profil, İlişki profilleri, Koçunun tarzı, Bildirimler,
+  Gizlilik ve veriler, Abonelik, Yardım ve destek
 
-### `npm run eject`
+## State of the build
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This is the full UI layer with working navigation and local state. Onboarding
+answers, coach-style dials, notification and privacy toggles, written
+reflections, chat messages and conversation deletions all persist to
+`localStorage` and survive a reload.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+There is **no backend and no model behind it yet**. Specifically:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- The coach replies with one fixed acknowledgement; it does not analyse anything.
+- The four non-transcript tabs on a conversation (Analiz, Koçluk, Yanıtlar,
+  Yansımalar) show a placeholder rather than invented analysis.
+- Sign-in buttons, "Verilerimi indir", "Premium'a göz at" and "Bize yaz" are
+  inert.
+- `src/firebase/config.js` is left over from the previous app and is unused.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Deliberate deviations from the Figma file
 
-## Learn More
+1. **Conversation transcripts.** The file mocks the *same* Elif transcript
+   inside all three Konuşma frames. Elif's conversation keeps that transcript
+   verbatim; Mert's and Annem's got transcripts matching their own title and
+   person, so the list does not read as broken.
+2. **Search entry point.** "Ne arıyorsun?" is designed but nothing in the file
+   links to it. A search button was added to the Sohbetler header.
+3. **Apple / Google logos.** The file exports these two as SVG assets, but this
+   build environment's egress policy blocks `figma.com`, so they could not be
+   downloaded, and Lucide has no brand equivalents. Both marks are inlined in
+   `src/veya/components/BrandIcons.js`. Every other icon is the real Lucide glyph.
+4. **Onboarding steps 4 and 7.** The progress bar says "/ 7" but only steps
+   1, 2, 3, 5, 6 and a final step were drawn. The flow runs those six and keeps
+   the design's own step labels and progress positions.
+5. **Stale layer names.** Several Figma text layers are still named "Clarify"
+   from an earlier product name; the actual text content says "VeYa", which is
+   what shipped.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Relationship to the previous app
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This repo previously held OyadaBu, an unrelated quiz game. Its screens
+(`CategoryScreen`, `GameScreen`, `ResultScreen`, `data/questions.js`) were
+removed to make room for VeYa and are recoverable from commit `6a990e9`.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The Capacitor `appId` (`app.oyadabu.oyun`) and the codemagic signing config are
+**unchanged**, because they are the existing App Store and certificate identity.
+Only the display name was changed to VeYa (`capacitor.config.ts` and
+`CFBundleDisplayName`).

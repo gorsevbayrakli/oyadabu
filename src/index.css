@@ -2,16 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
-
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: 'Outfit', sans-serif;
-  background: #ffffff;
+  font-family: "Nunito", sans-serif;
+  background: #0d1117;
+  color: #f9f9f9;
   overscroll-behavior: none;
+}
+
+/* Fredoka is a variable font; the design pins the default width axis. */
+.font-display {
+  font-variation-settings: "wdth" 100;
+}
+
+/* Hide scrollbars on the horizontal chip rails without losing scrollability. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::placeholder {
+  color: #a0b3c1;
+  opacity: 1;
 }
