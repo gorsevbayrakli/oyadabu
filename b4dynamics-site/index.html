@@ -1,30 +1,31 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>b4dynamics — Dönüşümün Hikâyesi</title>
-<meta name="description" content="b4dynamics: 2008'den beri Microsoft Dynamics 365 ile üretim şirketlerinin dönüşüm hikâyesini birlikte yazıyoruz. collana IT Group'un bir parçası.">
+<title>b4dynamics — A Transformation Story</title>
+<meta name="description" content="b4dynamics: since 2008, writing the transformation stories of manufacturers with Microsoft Dynamics 365. Part of the collana IT Group.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* ------------------------------------------------------------------
-     MARKA RENKLERİ — b4dynamics paleti.
-     Tüm renkler buradan yönetilir; resmi hex kodları farklıysa
-     sadece bu blok güncellenir.
+     BRAND COLORS — placeholder palette.
+     Every color on the page comes from these tokens. Replace them
+     with the official b4dynamics hex codes.
   ------------------------------------------------------------------ */
   :root {
-    --ink:        #0A1E3F;   /* koyu lacivert — metin & koyu bölümler */
-    --primary:    #1454D9;   /* b4dynamics mavisi — ana vurgu */
-    --primary-2:  #0E3FA8;   /* mavinin koyu tonu — hover */
-    --accent:     #2EC4F1;   /* açık camgöbeği — ikincil vurgu */
+    --ink:        #0A1E3F;   /* dark text & dark sections */
+    --primary:    #1454D9;   /* primary brand color */
+    --primary-2:  #0E3FA8;   /* primary, darker (hover) */
+    --accent:     #2EC4F1;   /* secondary accent */
     --accent-soft:#DDF5FD;
-    --warn:       #FF7A45;   /* "sorun" anlarında kullanılan sıcak ton */
+    --warn:       #FF7A45;   /* warm tone for "problem" moments */
     --bg:         #FFFFFF;
     --bg-soft:    #F3F6FB;
     --line:       #DCE3EE;
     --muted:      #5B6B85;
+    --on-dark-muted: #B9C6DD; /* secondary text on dark sections */
 
     --radius-lg: 32px;
     --radius-md: 20px;
@@ -48,7 +49,7 @@
 
   .wrap { width: min(var(--max), 100% - 32px); margin-inline: auto; }
 
-  /* ---------- Tipografi ---------- */
+  /* ---------- Typography ---------- */
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
     font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
@@ -69,7 +70,7 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
-  /* ---------- Butonlar (collana tarzı hap butonlar) ---------- */
+  /* ---------- Buttons (collana-style pills) ---------- */
   .btn {
     display: inline-flex; align-items: center; gap: 12px;
     padding: 16px 28px; border-radius: var(--radius-pill);
@@ -90,7 +91,7 @@
   .btn-light { background: #fff; color: var(--ink); }
   .btn-light .arrow { background: var(--bg-soft); }
 
-  /* ---------- Navigasyon ---------- */
+  /* ---------- Navigation ---------- */
   .nav {
     position: fixed; inset: 16px 0 auto; z-index: 50; pointer-events: none;
   }
@@ -104,11 +105,7 @@
     box-shadow: 0 10px 30px -18px rgba(10,30,63,.35);
   }
   .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; }
-  .logo-mark {
-    width: 34px; height: 34px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    display: grid; place-items: center; color: #fff; font-size: .85rem; font-weight: 800;
-  }
+  .logo img { height: 32px; width: auto; }
   .nav-links { display: flex; gap: 4px; list-style: none; }
   .nav-links a {
     display: block; padding: 10px 16px; border-radius: var(--radius-pill);
@@ -118,7 +115,7 @@
   .nav .btn { padding: 10px 18px; font-size: .92rem; }
   .nav .btn .arrow { width: 22px; height: 22px; }
 
-  /* ---------- Hikâye ipi (kolye / collana motifi) ---------- */
+  /* ---------- Story thread (necklace / collana motif) ---------- */
   .thread {
     position: fixed; left: 28px; top: 50%; transform: translateY(-50%);
     z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 0;
@@ -146,7 +143,7 @@
   .bead.done { background: var(--primary); border-color: var(--primary); }
   .bead.current { background: var(--accent); border-color: var(--primary); box-shadow: 0 0 0 6px var(--accent-soft); }
 
-  /* ---------- Bölümler ---------- */
+  /* ---------- Sections ---------- */
   section { position: relative; padding: clamp(90px, 12vw, 160px) 0; }
   .chapter-tag {
     display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px;
@@ -159,14 +156,14 @@
   .soft { background: var(--bg-soft); }
   .rounded-top { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 
-  /* Açılış */
+  /* Opening */
   .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 140px; overflow: hidden; }
   .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
   .hero h1 { margin: 22px 0 26px; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
   .hero-visual {
     position: relative; aspect-ratio: 1; border-radius: var(--radius-lg);
-    background: radial-gradient(120% 120% at 20% 10%, #1c63f0 0%, var(--ink) 60%);
+    background: radial-gradient(120% 120% at 20% 10%, var(--primary) 0%, var(--ink) 60%);
     overflow: hidden; box-shadow: var(--shadow);
   }
   .hero-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -192,7 +189,7 @@
   }
   @keyframes wheel { to { transform: translateY(10px); opacity: 0; } }
 
-  /* Bölüm 1 — Sorun */
+  /* Chapter 1 — Problem */
   .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .story-text p { font-size: 1.12rem; color: var(--muted); margin-top: 18px; max-width: 52ch; }
   .story-text p strong { color: var(--ink); }
@@ -209,13 +206,15 @@
   }
   .notif .ic {
     flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
-    background: #FFF1EA; color: var(--warn); font-weight: 800;
+    background: color-mix(in srgb, var(--warn) 12%, #fff); color: var(--warn); font-weight: 800;
   }
-  .notif b { display: block; font-size: .98rem; }
+  .notif > div:not(.ic) { min-width: 0; }
+  .notif b { display: block; font-size: .98rem; overflow-wrap: anywhere; }
+  .problem-grid > * { min-width: 0; }
   .notif span { font-size: .88rem; color: var(--muted); }
   .notif time { margin-left: auto; font-size: .78rem; color: var(--muted); white-space: nowrap; }
 
-  /* Bölüm 2 — Rehber */
+  /* Chapter 2 — Guide */
   .guide-head { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: end; margin-bottom: 64px; }
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .stat {
@@ -229,7 +228,7 @@
     padding: clamp(28px, 4vw, 48px); display: grid; grid-template-columns: .9fr 1.1fr; gap: 32px; align-items: center;
     overflow: hidden;
   }
-  .map-card p { color: #B9C6DD; margin-top: 12px; }
+  .map-card p { color: var(--on-dark-muted); margin-top: 12px; }
   .offices { display: flex; flex-direction: column; gap: 12px; }
   .office {
     display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--radius-md);
@@ -237,19 +236,19 @@
   }
   .office .flag {
     width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none;
-    background: rgba(46,196,241,.15); color: var(--accent); font-weight: 800; font-size: .8rem;
+    background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); font-weight: 800; font-size: .8rem;
   }
   .office b { display: block; }
-  .office small { color: #B9C6DD; }
+  .office small { color: var(--on-dark-muted); }
 
-  /* Bölüm 3 — Plan */
+  /* Chapter 3 — Plan */
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 64px; counter-reset: s; }
   .step {
     position: relative; padding: 32px 26px 30px; border-radius: var(--radius-md);
     background: var(--bg-soft); transition: background .35s, color .35s, transform .35s;
   }
   .step:hover { background: var(--ink); color: #fff; transform: translateY(-6px); }
-  .step:hover p { color: #B9C6DD; }
+  .step:hover p { color: var(--on-dark-muted); }
   .step .n {
     width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
     background: #fff; color: var(--primary); font-weight: 800; margin-bottom: 44px;
@@ -262,7 +261,7 @@
   }
   .step:last-child::after { display: none; }
 
-  /* Bölüm 4 — Dönüşüm */
+  /* Chapter 4 — Transformation */
   .compare {
     margin-top: 56px; border-radius: var(--radius-lg); overflow: hidden; background: #fff;
     border: 1px solid var(--line); box-shadow: var(--shadow);
@@ -284,7 +283,7 @@
   }
   .pane.on { opacity: 1; visibility: visible; transform: none; }
   .pane .cell { border-radius: var(--radius-md); padding: 26px; }
-  .pane.before .cell { background: #FFF6F1; }
+  .pane.before .cell { background: color-mix(in srgb, var(--warn) 8%, #fff); }
   .pane.after .cell { background: var(--accent-soft); }
   .cell .big { font-size: 2.2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
   .pane.before .big { color: var(--warn); }
@@ -298,10 +297,10 @@
     min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff;
   }
   .ind.process { background: linear-gradient(160deg, var(--primary) 0%, var(--ink) 85%); }
-  .ind.discrete { background: linear-gradient(160deg, #13305f 0%, var(--ink) 85%); }
+  .ind.discrete { background: linear-gradient(160deg, color-mix(in srgb, var(--primary) 30%, var(--ink)) 0%, var(--ink) 85%); }
   .ind .label { position: absolute; top: 28px; left: clamp(28px, 4vw, 44px); font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
   .ind h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
-  .ind p { color: #C8D4EA; margin-top: 10px; max-width: 42ch; }
+  .ind p { color: var(--on-dark-muted); margin-top: 10px; max-width: 42ch; }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
   .tags span {
     padding: 8px 14px; border-radius: var(--radius-pill); font-size: .85rem; font-weight: 600;
@@ -309,7 +308,7 @@
   }
   .ind svg.deco { position: absolute; right: -40px; top: -40px; width: 260px; opacity: .22; }
 
-  /* Bölüm 5 — collana ağı */
+  /* Chapter 5 — collana network */
   .network { display: grid; grid-template-columns: .95fr 1.05fr; gap: 56px; align-items: center; }
   .necklace-wrap {
     position: relative; aspect-ratio: 1; border-radius: var(--radius-lg); background: var(--bg-soft);
@@ -326,7 +325,7 @@
   .net-stats b { display: block; font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--primary); line-height: 1.1; }
   .net-stats span { color: var(--muted); font-size: .92rem; }
 
-  /* Epilog — CTA */
+  /* Epilogue — CTA */
   .epilogue { padding-bottom: 0; }
   .cta {
     border-radius: var(--radius-lg); background: var(--ink); color: #fff; overflow: hidden; position: relative;
@@ -334,10 +333,10 @@
   }
   .cta::before {
     content: ""; position: absolute; width: 520px; height: 520px; right: -160px; top: -200px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(46,196,241,.35), transparent 65%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 65%);
   }
   .cta h2 { position: relative; }
-  .cta p { color: #B9C6DD; margin-top: 18px; font-size: 1.1rem; position: relative; }
+  .cta p { color: var(--on-dark-muted); margin-top: 18px; font-size: 1.1rem; position: relative; }
   .form { position: relative; display: flex; flex-direction: column; gap: 12px; }
   .form input, .form select, .form textarea {
     width: 100%; font-family: inherit; font-size: 1rem; color: #fff;
@@ -349,7 +348,7 @@
   .form input::placeholder, .form textarea::placeholder { color: #8FA0BF; }
   .form input:focus, .form select:focus, .form textarea:focus { border-color: var(--accent); }
   .form .btn { justify-content: center; margin-top: 4px; }
-  .form-ok { display: none; padding: 16px 18px; border-radius: 16px; background: rgba(46,196,241,.15); color: #fff; font-weight: 600; }
+  .form-ok { display: none; padding: 16px 18px; border-radius: 16px; background: color-mix(in srgb, var(--accent) 15%, transparent); color: #fff; font-weight: 600; }
 
   footer { padding: 72px 0 40px; }
   .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
@@ -359,7 +358,7 @@
   .foot p { color: var(--muted); margin-top: 14px; max-width: 34ch; }
   .legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 28px; font-size: .85rem; color: var(--muted); }
 
-  /* ---------- Scroll animasyonları ---------- */
+  /* ---------- Scroll animations ---------- */
   .reveal { opacity: 0; transform: translateY(36px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
   .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
@@ -398,60 +397,59 @@
 </head>
 <body>
 
-<!-- ============ NAVİGASYON ============ -->
+<!-- ============ NAVIGATION ============ -->
 <header class="nav">
   <div class="wrap nav-inner">
-    <a href="#top" class="logo" aria-label="b4dynamics ana sayfa">
-      <span class="logo-mark">b4</span>b4dynamics
-    </a>
+    <!-- Replace this wordmark with the official logo: <img src="logo.svg" alt="b4dynamics"> -->
+    <a href="#top" class="logo" aria-label="b4dynamics home">b4dynamics</a>
     <ul class="nav-links">
-      <li><a href="#sorun">Hikâye</a></li>
-      <li><a href="#rehber">Biz kimiz</a></li>
-      <li><a href="#plan">Yöntem</a></li>
-      <li><a href="#donusum">Sektörler</a></li>
-      <li><a href="#ag">collana</a></li>
+      <li><a href="#problem">Story</a></li>
+      <li><a href="#guide">About us</a></li>
+      <li><a href="#plan">Approach</a></li>
+      <li><a href="#transformation">Industries</a></li>
+      <li><a href="#network">collana</a></li>
     </ul>
-    <a href="#iletisim" class="btn btn-primary"><span class="t">Hikâyenizi anlatın</span><span class="arrow">→</span></a>
+    <a href="#contact" class="btn btn-primary"><span class="t">Tell us your story</span><span class="arrow">→</span></a>
   </div>
 </header>
 
-<!-- ============ HİKÂYE İPİ (sol kenar ilerleme) ============ -->
-<nav class="thread" aria-label="Hikâye bölümleri">
+<!-- ============ STORY THREAD (left-edge progress) ============ -->
+<nav class="thread" aria-label="Story chapters">
   <div class="thread-line"><div class="thread-fill" id="threadFill"></div></div>
-  <a class="bead" href="#top" data-target="top"><span>Başlangıç</span></a>
-  <a class="bead" href="#sorun" data-target="sorun"><span>01 · Sorun</span></a>
-  <a class="bead" href="#rehber" data-target="rehber"><span>02 · Rehber</span></a>
-  <a class="bead" href="#plan" data-target="plan"><span>03 · Plan</span></a>
-  <a class="bead" href="#donusum" data-target="donusum"><span>04 · Dönüşüm</span></a>
-  <a class="bead" href="#ag" data-target="ag"><span>05 · Güçlü bir ağ</span></a>
-  <a class="bead" href="#iletisim" data-target="iletisim"><span>06 · Sizin bölümünüz</span></a>
+  <a class="bead" href="#top" data-target="top"><span>Start</span></a>
+  <a class="bead" href="#problem" data-target="problem"><span>01 · The problem</span></a>
+  <a class="bead" href="#guide" data-target="guide"><span>02 · The guide</span></a>
+  <a class="bead" href="#plan" data-target="plan"><span>03 · The plan</span></a>
+  <a class="bead" href="#transformation" data-target="transformation"><span>04 · The transformation</span></a>
+  <a class="bead" href="#network" data-target="network"><span>05 · A strong network</span></a>
+  <a class="bead" href="#contact" data-target="contact"><span>06 · Your chapter</span></a>
 </nav>
 
 <main>
 
-<!-- ============ AÇILIŞ ============ -->
+<!-- ============ OPENING ============ -->
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow reveal">Microsoft Dynamics 365 · 2008'den beri</span>
-      <h1 class="reveal d1">Her büyük dönüşüm, <span class="hl-grad">tek bir sabahla</span> başlar.</h1>
-      <p class="lead reveal d2">Bu, dağınık tablolardan akan süreçlere uzanan bir hikâye. Başrolde siz varsınız — biz ise yol boyunca yanınızda yürüyen rehberiz.</p>
+      <span class="eyebrow reveal">Microsoft Dynamics 365 · Since 2008</span>
+      <h1 class="reveal d1">Every great transformation <span class="hl-grad">starts on a Monday morning.</span></h1>
+      <p class="lead reveal d2">This is a story about moving from scattered spreadsheets to processes that simply flow. You're the hero. We're the guide who walks the road with you.</p>
       <div class="hero-actions reveal d3">
-        <a href="#sorun" class="btn btn-primary">Hikâyeye başla <span class="arrow">↓</span></a>
-        <a href="#iletisim" class="btn btn-ghost">Bizimle konuşun <span class="arrow">→</span></a>
+        <a href="#problem" class="btn btn-primary">Start the story <span class="arrow">↓</span></a>
+        <a href="#contact" class="btn btn-ghost">Talk to us <span class="arrow">→</span></a>
       </div>
-      <div class="scroll-hint reveal d4"><span class="mouse"></span> Kaydırın — hikâye ilerledikçe ip doluyor</div>
+      <div class="scroll-hint reveal d4"><span class="mouse"></span> Scroll — the thread fills as the story unfolds</div>
     </div>
 
     <div class="hero-visual reveal d2" aria-hidden="true">
-      <!-- Birbirine bağlı boncuklar: süreçler, veriler, insanlar -->
+      <!-- Connected beads: processes, data, people -->
       <svg viewBox="0 0 400 400" fill="none">
         <defs>
           <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#2EC4F1"/><stop offset="1" stop-color="#1454D9"/>
+            <stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--primary)"/>
           </linearGradient>
         </defs>
-        <path id="heroPath" d="M -20 300 C 80 120, 160 360, 220 200 S 360 60, 430 140"
+        <path d="M -20 300 C 80 120, 160 360, 220 200 S 360 60, 430 140"
               stroke="url(#g1)" stroke-width="2.5" stroke-dasharray="6 8" opacity=".8">
           <animate attributeName="stroke-dashoffset" from="0" to="-140" dur="6s" repeatCount="indefinite"/>
         </path>
@@ -462,7 +460,7 @@
           <circle cx="300" cy="118" r="14" opacity=".7"/>
           <circle cx="372" cy="104" r="10" opacity=".5"/>
         </g>
-        <circle cx="220" cy="200" r="36" stroke="#2EC4F1" stroke-opacity=".4">
+        <circle cx="220" cy="200" r="36" stroke="var(--accent)" stroke-opacity=".4">
           <animate attributeName="r" values="26;46;26" dur="4s" repeatCount="indefinite"/>
           <animate attributeName="stroke-opacity" values=".6;0;.6" dur="4s" repeatCount="indefinite"/>
         </circle>
@@ -470,167 +468,167 @@
           <path d="M0 80H400M0 160H400M0 240H400M0 320H400M80 0V400M160 0V400M240 0V400M320 0V400"/>
         </g>
       </svg>
-      <div class="hero-chip c1"><i></i> Finans ↔ Üretim ↔ Kalite: tek kaynak</div>
-      <div class="hero-chip c2"><i style="background:#1454D9"></i> Doğrulanmış süreç · GxP</div>
+      <div class="hero-chip c1"><i></i> Finance ↔ Production ↔ Quality: one source of truth</div>
+      <div class="hero-chip c2"><i style="background:var(--primary)"></i> Validated processes · GxP</div>
     </div>
   </div>
 </section>
 
-<!-- ============ BÖLÜM 1 — SORUN ============ -->
-<section id="sorun" class="soft rounded-top" data-chapter>
+<!-- ============ CHAPTER 1 — THE PROBLEM ============ -->
+<section id="problem" class="soft rounded-top" data-chapter>
   <div class="wrap problem-grid">
     <div class="story-text">
-      <div class="chapter-tag reveal"><b>01</b> Bölüm bir — Sorun</div>
-      <div class="clock reveal d1">Pazartesi, 07:40<small>Bir ilaç üreticisinde, sıradan bir hafta başı.</small></div>
-      <p class="reveal d2">Üretim müdürü Elif bilgisayarını açıyor. Kahvesi daha soğumadan ekran bildirimlerle doluyor. Stok rakamları üretimdekiyle tutmuyor, finans başka bir tablodan konuşuyor, kalite ekibi ise yaklaşan denetim için <strong>kanıt arıyor.</strong></p>
-      <p class="reveal d3">Şirket büyümüş; ama sistemler aynı hızla büyümemiş. Her departmanın kendi “doğrusu” var. <strong>Elif'in asıl işi üretmek — fakat günlerinin yarısı veri kovalamakla geçiyor.</strong></p>
-      <p class="reveal d4" style="font-size:.85rem">* Elif, müşterilerimizin sıkça yaşadığı durumlardan derlenmiş temsili bir karakterdir.</p>
+      <div class="chapter-tag reveal"><b>01</b> Chapter one — The problem</div>
+      <div class="clock reveal d1">Monday, 7:40 AM<small>At a pharmaceutical manufacturer, an ordinary start to the week.</small></div>
+      <p class="reveal d2">Production manager Maria opens her laptop. Before her coffee cools, the screen fills with notifications. Stock figures don't match the shop floor, finance is working from a different spreadsheet, and quality assurance is <strong>hunting for evidence</strong> ahead of the audit.</p>
+      <p class="reveal d3">The company has grown, but its systems haven't kept up. Every department has its own version of the truth. <strong>Maria's job is to run production, yet half her day goes into chasing data.</strong></p>
+      <p class="reveal d4" style="font-size:.85rem">* Maria is a composite character based on situations our customers often describe.</p>
     </div>
 
-    <div class="notif-stack" aria-label="Sabah bildirimleri">
-      <div class="notif reveal"><div class="ic">!</div><div><b>stok_sayim_v17_SON_final.xlsx</b><span>3 farklı sürüm, 3 farklı rakam.</span></div><time>07:41</time></div>
-      <div class="notif reveal d1"><div class="ic">⏱</div><div><b>Denetime 14 gün kaldı</b><span>Parti izlenebilirlik raporu hâlâ elle hazırlanıyor.</span></div><time>07:43</time></div>
-      <div class="notif reveal d2"><div class="ic">≠</div><div><b>Finans ↔ Üretim uyuşmazlığı</b><span>Ay sonu kapanışı yine gecikecek.</span></div><time>07:46</time></div>
-      <div class="notif reveal d3"><div class="ic">✉</div><div><b>İstanbul ofisinden e-posta</b><span>“Almanya'daki rakamlar bizimkilerle aynı mı?”</span></div><time>07:52</time></div>
+    <div class="notif-stack" aria-label="Morning notifications">
+      <div class="notif reveal"><div class="ic">!</div><div><b>stock_count_v17_FINAL_final.xlsx</b><span>Three versions, three different numbers.</span></div><time>7:41</time></div>
+      <div class="notif reveal d1"><div class="ic">⏱</div><div><b>Audit in 14 days</b><span>Batch traceability report is still compiled by hand.</span></div><time>7:43</time></div>
+      <div class="notif reveal d2"><div class="ic">≠</div><div><b>Finance ↔ Production mismatch</b><span>Month-end close is going to slip again.</span></div><time>7:46</time></div>
+      <div class="notif reveal d3"><div class="ic">✉</div><div><b>Email from the Istanbul office</b><span>“Do Germany's numbers match ours?”</span></div><time>7:52</time></div>
     </div>
   </div>
 </section>
 
-<!-- ============ BÖLÜM 2 — REHBER ============ -->
-<section id="rehber" class="soft" data-chapter style="padding-top:0">
+<!-- ============ CHAPTER 2 — THE GUIDE ============ -->
+<section id="guide" class="soft" data-chapter style="padding-top:0">
   <div class="wrap">
     <div class="guide-head">
       <div>
-        <div class="chapter-tag reveal"><b>02</b> Bölüm iki — Rehber</div>
-        <h2 class="reveal d1">Her kahramanın bir <span class="hl">rehbere</span> ihtiyacı vardır.</h2>
+        <div class="chapter-tag reveal"><b>02</b> Chapter two — The guide</div>
+        <h2 class="reveal d1">Every hero needs a <span class="hl">guide.</span></h2>
       </div>
-      <p class="lead reveal d2">b4dynamics, 2008'den bu yana üretim şirketlerinin Microsoft Dynamics 365 yolculuğunda yanında. Süreçlerinizi önce anlıyor, sonra dijitalleştiriyoruz — özellikle kuralların sıkı, hata payının sıfır olduğu sektörlerde.</p>
+      <p class="lead reveal d2">Since 2008, b4dynamics has guided manufacturers through their Microsoft Dynamics 365 journey. We understand your processes first, then digitize them — especially in industries where the rules are strict and there's no room for error.</p>
     </div>
 
     <div class="stats">
-      <div class="stat reveal"><div class="num" data-count="2008">2008</div><p>Yılından beri ERP &amp; CRM danışmanlığı</p></div>
-      <div class="stat reveal d1"><div class="num"><span data-count="50">50</span><em>+</em></div><p>Microsoft ekosisteminde uzman</p></div>
-      <div class="stat reveal d2"><div class="num" data-count="3">3</div><p>Ülke: Almanya, Türkiye, ABD</p></div>
-      <div class="stat reveal d3"><div class="num" data-count="2">2</div><p>Odak: proses &amp; kesikli üretim</p></div>
+      <div class="stat reveal"><div class="num" data-count="2008">2008</div><p>ERP &amp; CRM consulting since</p></div>
+      <div class="stat reveal d1"><div class="num"><span data-count="50">50</span><em>+</em></div><p>Experts in the Microsoft ecosystem</p></div>
+      <div class="stat reveal d2"><div class="num" data-count="3">3</div><p>Countries: Germany, Türkiye, USA</p></div>
+      <div class="stat reveal d3"><div class="num" data-count="2">2</div><p>Focus areas: process &amp; discrete manufacturing</p></div>
     </div>
 
     <div class="map-card reveal">
       <div>
-        <h3 style="font-size:clamp(1.5rem,2.6vw,2.1rem)">Üç kıta saat dilimi, tek ekip.</h3>
-        <p>Uluslararası projelerde aynı dili konuşan, aynı veriye bakan bir ekip. Yerel mevzuatı bilen danışmanlar, küresel ölçekte çalışan çözümler.</p>
+        <h3 style="font-size:clamp(1.5rem,2.6vw,2.1rem)">Three time zones, one team.</h3>
+        <p>On international projects you get one team that speaks the same language and looks at the same data. Consultants who know local regulations, solutions that work at global scale.</p>
       </div>
       <div class="offices">
-        <div class="office"><div class="flag">DE</div><div><b>Hüfingen, Almanya</b><small>Genel merkez</small></div></div>
-        <div class="office"><div class="flag">TR</div><div><b>İstanbul, Türkiye</b><small>Danışmanlık &amp; geliştirme</small></div></div>
-        <div class="office"><div class="flag">US</div><div><b>Denver, ABD</b><small>Kuzey Amerika projeleri</small></div></div>
+        <div class="office"><div class="flag">DE</div><div><b>Hüfingen, Germany</b><small>Headquarters</small></div></div>
+        <div class="office"><div class="flag">TR</div><div><b>Istanbul, Türkiye</b><small>Consulting &amp; development</small></div></div>
+        <div class="office"><div class="flag">US</div><div><b>Denver, USA</b><small>North American projects</small></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ BÖLÜM 3 — PLAN ============ -->
+<!-- ============ CHAPTER 3 — THE PLAN ============ -->
 <section id="plan" data-chapter>
   <div class="wrap">
-    <div class="chapter-tag reveal"><b>03</b> Bölüm üç — Plan</div>
-    <h2 class="reveal d1" style="max-width:18ch">Kaos yerine, <span class="hl">dört net adım.</span></h2>
-    <p class="lead reveal d2" style="margin-top:20px">Elif'in ihtiyacı yeni bir yazılım değil; güvenebileceği bir yol haritasıydı. Her projede aynı şeffaf yöntemi izliyoruz.</p>
+    <div class="chapter-tag reveal"><b>03</b> Chapter three — The plan</div>
+    <h2 class="reveal d1" style="max-width:18ch">Instead of chaos, <span class="hl">four clear steps.</span></h2>
+    <p class="lead reveal d2" style="margin-top:20px">Maria didn't need more software. She needed a roadmap she could trust. We follow the same transparent approach on every project.</p>
 
     <div class="steps">
-      <div class="step reveal"><div class="n">1</div><h3>Anla</h3><p>Süreçlerinizi atölyede, sahada ve ekiplerinizle birlikte haritalıyoruz. Önce “neden”, sonra “nasıl”.</p></div>
-      <div class="step reveal d1"><div class="n">2</div><h3>Tasarla</h3><p>Dynamics 365 Finance &amp; Operations, Business Central ya da CRM — ihtiyacınıza göre ölçeklenen mimari.</p></div>
-      <div class="step reveal d2"><div class="n">3</div><h3>Uygula &amp; doğrula</h3><p>Geçiş, entegrasyon (DMS, PLM, MES, LIMS, EDI) ve GxP ortamında bilgisayarlı sistem validasyonu.</p></div>
-      <div class="step reveal d3"><div class="n">4</div><h3>Büyüt</h3><p>Anahtar kullanıcı eğitimleri, buluta geçiş ve canlı sonrası destekle sistem sizinle birlikte büyür.</p></div>
+      <div class="step reveal"><div class="n">1</div><h3>Understand</h3><p>We map your processes in workshops, on the shop floor and with your teams. The “why” comes before the “how”.</p></div>
+      <div class="step reveal d1"><div class="n">2</div><h3>Design</h3><p>Dynamics 365 Finance &amp; Operations, Business Central or CRM — an architecture that scales with your needs.</p></div>
+      <div class="step reveal d2"><div class="n">3</div><h3>Implement &amp; validate</h3><p>Migration, integration (DMS, PLM, MES, LIMS, EDI) and computerized system validation in GxP environments.</p></div>
+      <div class="step reveal d3"><div class="n">4</div><h3>Grow</h3><p>Key-user training, cloud migration and post-go-live support, so the system grows with you.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ============ BÖLÜM 4 — DÖNÜŞÜM ============ -->
-<section id="donusum" class="soft" data-chapter>
+<!-- ============ CHAPTER 4 — THE TRANSFORMATION ============ -->
+<section id="transformation" class="soft" data-chapter>
   <div class="wrap">
-    <div class="chapter-tag reveal"><b>04</b> Bölüm dört — Dönüşüm</div>
-    <h2 class="reveal d1" style="max-width:20ch">Aynı pazartesi. <span class="hl">Bambaşka bir sabah.</span></h2>
-    <p class="lead reveal d2" style="margin-top:20px">Aylar sonra Elif yine 07:40'ta bilgisayarını açıyor. Bu kez ekranda bildirim yağmuru yok — tek bir panel, tek bir doğru var.</p>
+    <div class="chapter-tag reveal"><b>04</b> Chapter four — The transformation</div>
+    <h2 class="reveal d1" style="max-width:20ch">Same Monday. <span class="hl">A completely different morning.</span></h2>
+    <p class="lead reveal d2" style="margin-top:20px">Months later, Maria opens her laptop at 7:40 again. This time there's no flood of notifications — just one dashboard and one version of the truth.</p>
 
     <div class="compare reveal">
-      <div class="toggle" role="tablist" aria-label="Önce ve sonra">
-        <button class="" role="tab" aria-selected="false" data-pane="before">Önce</button>
-        <button class="on" role="tab" aria-selected="true" data-pane="after">Sonra</button>
+      <div class="toggle" role="tablist" aria-label="Before and after">
+        <button class="" role="tab" aria-selected="false" data-pane="before">Before</button>
+        <button class="on" role="tab" aria-selected="true" data-pane="after">After</button>
       </div>
       <div class="panes">
         <div class="pane before" data-pane="before">
-          <div class="cell"><div class="big">Dağınık</div><p>Departman başına ayrı tablo, ayrı gerçek.</p></div>
-          <div class="cell"><div class="big">Elle</div><p>İzlenebilirlik ve denetim kanıtları kopyala-yapıştırla hazırlanıyor.</p></div>
-          <div class="cell"><div class="big">Gecikmeli</div><p>Ay sonu kapanışı ve raporlar günlerce sürüyor.</p></div>
+          <div class="cell"><div class="big">Scattered</div><p>A separate spreadsheet — and a separate truth — for every department.</p></div>
+          <div class="cell"><div class="big">Manual</div><p>Traceability and audit evidence assembled by copy and paste.</p></div>
+          <div class="cell"><div class="big">Delayed</div><p>Month-end close and reporting take days.</p></div>
         </div>
         <div class="pane after on" data-pane="after">
-          <div class="cell"><div class="big">Tek kaynak</div><p>Finans, üretim, kalite ve satış aynı veriye bakıyor.</p></div>
-          <div class="cell"><div class="big">Denetime hazır</div><p>Doğrulanmış süreçler ve uçtan uca parti izlenebilirliği.</p></div>
-          <div class="cell"><div class="big">Anlık</div><p>Almanya ve İstanbul aynı rakamı, aynı anda görüyor.</p></div>
+          <div class="cell"><div class="big">One source</div><p>Finance, production, quality and sales work from the same data.</p></div>
+          <div class="cell"><div class="big">Audit-ready</div><p>Validated processes and end-to-end batch traceability.</p></div>
+          <div class="cell"><div class="big">Real-time</div><p>Germany and Istanbul see the same numbers at the same moment.</p></div>
         </div>
       </div>
-      <p class="compare-note">Temsili senaryo. Somut sonuçlar her projede ortak hedeflerle birlikte tanımlanır.</p>
+      <p class="compare-note">Illustrative scenario. Concrete outcomes are defined together with you on every project.</p>
     </div>
 
     <div class="industries">
       <div class="ind process reveal">
         <svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-width="2"><circle cx="100" cy="100" r="40"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="98"/></svg>
-        <span class="label">Proses üretim</span>
-        <h3>Hata payının sıfır olduğu yerde.</h3>
-        <p>GxP gereklilikleri, validasyon ve parti yönetimi — Dynamics 365'i regülasyona tabi süreçlere göre genişletiyoruz.</p>
-        <div class="tags"><span>İlaç</span><span>Kimya</span><span>Yaşam bilimleri</span></div>
+        <span class="label">Process manufacturing</span>
+        <h3>Where there's zero room for error.</h3>
+        <p>GxP requirements, validation and batch management — we extend Dynamics 365 for regulated processes.</p>
+        <div class="tags"><span>Pharma</span><span>Chemicals</span><span>Life sciences</span></div>
       </div>
       <div class="ind discrete reveal d1">
         <svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-width="2"><rect x="30" y="30" width="140" height="140" rx="24"/><rect x="60" y="60" width="80" height="80" rx="16"/></svg>
-        <span class="label">Kesikli üretim</span>
-        <h3>Karmaşık ürün, sade süreç.</h3>
-        <p>Varyantlardan ürün ağaçlarına, projeye göre üretimden servis süreçlerine kadar uçtan uca görünürlük.</p>
-        <div class="tags"><span>Tekstil</span><span>Makine imalatı</span><span>Tesis mühendisliği</span><span>Medikal cihaz</span></div>
+        <span class="label">Discrete manufacturing</span>
+        <h3>Complex products, simple processes.</h3>
+        <p>End-to-end visibility, from variants and bills of materials to engineer-to-order production and service.</p>
+        <div class="tags"><span>Textiles</span><span>Machine building</span><span>Plant engineering</span><span>Medical devices</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ BÖLÜM 5 — collana AĞI ============ -->
-<section id="ag" data-chapter>
+<!-- ============ CHAPTER 5 — THE collana NETWORK ============ -->
+<section id="network" data-chapter>
   <div class="wrap network">
     <div class="necklace-wrap reveal" aria-hidden="true">
       <svg viewBox="0 0 400 400" id="necklace"></svg>
       <div class="center-label">collana<small>IT Group</small></div>
     </div>
     <div>
-      <div class="chapter-tag reveal"><b>05</b> Bölüm beş — Güçlü bir ağ</div>
-      <h2 class="reveal d1">Bir kolyedeki <span class="hl">en parlak boncuk</span> bile ipe ihtiyaç duyar.</h2>
-      <p class="lead reveal d2" style="margin-top:20px">İtalyanca'da “collana” kolye demek. 2024'ten bu yana b4dynamics, ERP'den yapay zekâya uzanan uzmanlıkları bir araya getiren collana IT Group'un parçası. Hikâyeniz büyüdüğünde, arkanızda koca bir ağ var.</p>
+      <div class="chapter-tag reveal"><b>05</b> Chapter five — A strong network</div>
+      <h2 class="reveal d1">Even the <span class="hl">brightest bead</span> needs a thread.</h2>
+      <p class="lead reveal d2" style="margin-top:20px">In Italian, “collana” means necklace. Since 2024, b4dynamics has been part of the collana IT Group, which brings together expertise from ERP to AI. As your story grows, a whole network stands behind you.</p>
       <div class="net-stats">
-        <div class="reveal"><b>10</b><span>Grup şirketi</span></div>
-        <div class="reveal d1"><b>500+</b><span>Uzman</span></div>
-        <div class="reveal d2"><b>1000+</b><span>Müşteri</span></div>
-        <div class="reveal d3"><b>12</b><span>Odak sektör</span></div>
+        <div class="reveal"><b>10</b><span>Group companies</span></div>
+        <div class="reveal d1"><b>500+</b><span>Experts</span></div>
+        <div class="reveal d2"><b>1000+</b><span>Customers</span></div>
+        <div class="reveal d3"><b>12</b><span>Focus industries</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ EPİLOG — CTA ============ -->
-<section id="iletisim" class="epilogue" data-chapter>
+<!-- ============ EPILOGUE — CTA ============ -->
+<section id="contact" class="epilogue" data-chapter>
   <div class="wrap">
     <div class="cta reveal">
       <div>
-        <div class="chapter-tag" style="color:#B9C6DD"><b style="background:var(--primary)">06</b> Epilog — Sizin bölümünüz</div>
-        <h2>Hikâyeniz şu an <span class="hl-grad">hangi bölümde?</span></h2>
-        <p>Pazartesi sabahlarınızı anlatın. Gerisini birlikte yazalım — ilk görüşme, sorunun ne olduğunu anlamakla başlar.</p>
+        <div class="chapter-tag" style="color:var(--on-dark-muted)"><b style="background:var(--primary)">06</b> Epilogue — Your chapter</div>
+        <h2>Which chapter is <span class="hl-grad">your story in?</span></h2>
+        <p>Tell us about your Monday mornings, and we'll write the rest together. The first conversation starts with understanding the problem.</p>
       </div>
       <form class="form" id="contactForm">
-        <input type="text" name="name" placeholder="Adınız soyadınız" required>
-        <input type="email" name="email" placeholder="İş e-postanız" required>
-        <select name="chapter" aria-label="Şu an hangi bölümdesiniz?">
-          <option>Bölüm 1 — Sorunu yaşıyoruz</option>
-          <option>Bölüm 3 — Plan arıyoruz</option>
-          <option>Bölüm 4 — Dönüşümdeyiz, destek lazım</option>
+        <input type="text" name="name" placeholder="Full name" required>
+        <input type="email" name="email" placeholder="Work email" required>
+        <select name="chapter" aria-label="Which chapter are you in?">
+          <option>Chapter 1 — We're living the problem</option>
+          <option>Chapter 3 — We're looking for a plan</option>
+          <option>Chapter 4 — We're mid-transformation and need support</option>
         </select>
-        <textarea name="message" placeholder="Pazartesi sabahlarınız nasıl geçiyor?"></textarea>
-        <button type="submit" class="btn btn-light">Hikâyemi gönder <span class="arrow">→</span></button>
-        <div class="form-ok" id="formOk">Teşekkürler! Hikâyenizin bir sonraki bölümünü birlikte yazmak için en kısa sürede dönüş yapacağız.</div>
+        <textarea name="message" placeholder="What are your Monday mornings like?"></textarea>
+        <button type="submit" class="btn btn-light">Share my story <span class="arrow">→</span></button>
+        <div class="form-ok" id="formOk">Thank you! We'll be in touch soon to write the next chapter together.</div>
       </form>
     </div>
   </div>
@@ -642,25 +640,28 @@
   <div class="wrap">
     <div class="foot">
       <div>
-        <a href="#top" class="logo"><span class="logo-mark">b4</span>b4dynamics</a>
-        <p>Microsoft Dynamics 365 ile üretim şirketlerinin dönüşüm hikâyesini birlikte yazıyoruz. collana IT Group'un bir parçası.</p>
+        <a href="#top" class="logo">b4dynamics</a>
+        <p>Writing the transformation stories of manufacturers with Microsoft Dynamics 365. Part of the collana IT Group.</p>
       </div>
-      <div><h4>Hikâye</h4><ul><li><a href="#sorun">Sorun</a></li><li><a href="#rehber">Rehber</a></li><li><a href="#plan">Plan</a></li><li><a href="#donusum">Dönüşüm</a></li></ul></div>
-      <div><h4>Sektörler</h4><ul><li><a href="#donusum">İlaç &amp; kimya</a></li><li><a href="#donusum">Yaşam bilimleri</a></li><li><a href="#donusum">Tekstil</a></li><li><a href="#donusum">Makine &amp; medikal</a></li></ul></div>
-      <div><h4>Ofisler</h4><ul><li>Hüfingen</li><li>İstanbul</li><li>Denver</li></ul></div>
+      <div><h4>Story</h4><ul><li><a href="#problem">Problem</a></li><li><a href="#guide">Guide</a></li><li><a href="#plan">Plan</a></li><li><a href="#transformation">Transformation</a></li></ul></div>
+      <div><h4>Industries</h4><ul><li><a href="#transformation">Pharma &amp; chemicals</a></li><li><a href="#transformation">Life sciences</a></li><li><a href="#transformation">Textiles</a></li><li><a href="#transformation">Machinery &amp; medical</a></li></ul></div>
+      <div><h4>Offices</h4><ul><li>Hüfingen</li><li>Istanbul</li><li>Denver</li></ul></div>
     </div>
-    <div class="legal"><span>© <span id="yr"></span> b4dynamics GmbH</span><span>Künye · Gizlilik · Çerezler</span></div>
+    <div class="legal"><span>© <span id="yr"></span> b4dynamics GmbH</span><span>Imprint · Privacy · Cookies</span></div>
   </div>
 </footer>
 
 <script>
-  // Scroll ile görünür olma
+  const css = getComputedStyle(document.documentElement);
+  const token = name => css.getPropertyValue(name).trim();
+
+  // Reveal on scroll
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // Hikâye ipi: ilerleme + aktif boncuk + nav vurgusu
+  // Story thread: progress, active bead, nav highlight
   const fill = document.getElementById('threadFill');
   const beads = [...document.querySelectorAll('.bead')];
   const navLinks = [...document.querySelectorAll('.nav-links a')];
@@ -680,7 +681,7 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Sayaç animasyonu
+  // Count-up numbers
   const counters = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
@@ -697,7 +698,7 @@
   }, { threshold: 0.6 });
   document.querySelectorAll('[data-count]').forEach(el => counters.observe(el));
 
-  // Önce / Sonra
+  // Before / After
   document.querySelectorAll('.toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
       const k = btn.dataset.pane;
@@ -708,33 +709,33 @@
     });
   });
 
-  // collana kolyesi: 10 boncuk, biri b4dynamics
+  // collana necklace: 10 beads, one of them is b4dynamics
   (function () {
     const svg = document.getElementById('necklace'), ns = 'http://www.w3.org/2000/svg';
     const cx = 200, cy = 200, r = 150, n = 10;
+    const set = (el, attrs) => Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
     const ring = document.createElementNS(ns, 'circle');
-    Object.entries({ cx, cy, r, fill: 'none', stroke: '#DCE3EE', 'stroke-width': 2 }).forEach(([k, v]) => ring.setAttribute(k, v));
+    set(ring, { cx, cy, r, fill: 'none', stroke: token('--line'), 'stroke-width': 2 });
     svg.appendChild(ring);
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2 - Math.PI / 2;
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
       const isUs = i === 0;
       const c = document.createElementNS(ns, 'circle');
-      Object.entries({ cx: x, cy: y, r: isUs ? 26 : 14, fill: isUs ? '#1454D9' : '#fff',
-        stroke: isUs ? '#2EC4F1' : '#0A1E3F', 'stroke-width': isUs ? 6 : 2 }).forEach(([k, v]) => c.setAttribute(k, v));
-      c.classList.add('n-bead');
+      set(c, { cx: x, cy: y, r: isUs ? 30 : 14, fill: isUs ? token('--primary') : '#fff',
+        stroke: isUs ? token('--accent') : token('--ink'), 'stroke-width': isUs ? 6 : 2 });
       svg.appendChild(c);
       if (isUs) {
         const t = document.createElementNS(ns, 'text');
-        Object.entries({ x, y: y + 5, 'text-anchor': 'middle', fill: '#fff', 'font-size': 14, 'font-weight': 800,
-          'font-family': 'Plus Jakarta Sans, sans-serif' }).forEach(([k, v]) => t.setAttribute(k, v));
-        t.textContent = 'b4';
+        set(t, { x, y: y + 4, 'text-anchor': 'middle', fill: '#fff', 'font-size': 11, 'font-weight': 800,
+          'font-family': 'Plus Jakarta Sans, sans-serif' });
+        t.textContent = 'b4d';
         svg.appendChild(t);
       }
     }
   })();
 
-  // Form (arka uç bağlanana kadar yalnızca teşekkür mesajı gösterir)
+  // Form (only shows a thank-you message until a backend is connected)
   document.getElementById('contactForm').addEventListener('submit', e => {
     e.preventDefault();
     e.target.querySelectorAll('input, select, textarea, button').forEach(el => el.style.display = 'none');
