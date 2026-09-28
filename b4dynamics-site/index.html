@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>b4dynamics — Dönüşümün Hikâyesi</title>
+<meta name="description" content="b4dynamics: 2008'den beri Microsoft Dynamics 365 ile üretim şirketlerinin dönüşüm hikâyesini birlikte yazıyoruz. collana IT Group'un bir parçası.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ------------------------------------------------------------------
+     MARKA RENKLERİ — b4dynamics paleti.
+     Tüm renkler buradan yönetilir; resmi hex kodları farklıysa
+     sadece bu blok güncellenir.
+  ------------------------------------------------------------------ */
+  :root {
+    --ink:        #0A1E3F;   /* koyu lacivert — metin & koyu bölümler */
+    --primary:    #1454D9;   /* b4dynamics mavisi — ana vurgu */
+    --primary-2:  #0E3FA8;   /* mavinin koyu tonu — hover */
+    --accent:     #2EC4F1;   /* açık camgöbeği — ikincil vurgu */
+    --accent-soft:#DDF5FD;
+    --warn:       #FF7A45;   /* "sorun" anlarında kullanılan sıcak ton */
+    --bg:         #FFFFFF;
+    --bg-soft:    #F3F6FB;
+    --line:       #DCE3EE;
+    --muted:      #5B6B85;
+
+    --radius-lg: 32px;
+    --radius-md: 20px;
+    --radius-pill: 999px;
+    --shadow: 0 20px 50px -20px rgba(10, 30, 63, .25);
+    --max: 1200px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { width: min(var(--max), 100% - 32px); margin-inline: auto; }
+
+  /* ---------- Tipografi ---------- */
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--primary);
+  }
+  .eyebrow::before {
+    content: ""; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--primary); box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  h1, h2, h3 { line-height: 1.08; letter-spacing: -.025em; font-weight: 800; }
+  h1 { font-size: clamp(2.6rem, 6.5vw, 5.4rem); }
+  h2 { font-size: clamp(2rem, 4.4vw, 3.6rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); letter-spacing: -.01em; }
+  .lead { font-size: clamp(1.05rem, 1.6vw, 1.3rem); color: var(--muted); max-width: 60ch; }
+  .hl { color: var(--primary); }
+  .hl-grad {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* ---------- Butonlar (collana tarzı hap butonlar) ---------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 28px; border-radius: var(--radius-pill);
+    font-weight: 700; font-size: 1rem; border: 2px solid transparent;
+    transition: transform .25s, background .25s, color .25s, border-color .25s;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn .arrow {
+    width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255,255,255,.18); transition: transform .25s;
+  }
+  .btn:hover .arrow { transform: translateX(4px); }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-2); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: #fff; }
+  .btn-ghost .arrow { background: var(--bg-soft); }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-light { background: #fff; color: var(--ink); }
+  .btn-light .arrow { background: var(--bg-soft); }
+
+  /* ---------- Navigasyon ---------- */
+  .nav {
+    position: fixed; inset: 16px 0 auto; z-index: 50; pointer-events: none;
+  }
+  .nav-inner {
+    pointer-events: auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 10px 10px 10px 24px; border-radius: var(--radius-pill);
+    background: rgba(255,255,255,.82); backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(220,227,238,.8);
+    box-shadow: 0 10px 30px -18px rgba(10,30,63,.35);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; letter-spacing: -.02em; }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: grid; place-items: center; color: #fff; font-size: .85rem; font-weight: 800;
+  }
+  .nav-links { display: flex; gap: 4px; list-style: none; }
+  .nav-links a {
+    display: block; padding: 10px 16px; border-radius: var(--radius-pill);
+    font-weight: 600; font-size: .92rem; color: var(--muted); transition: background .2s, color .2s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: var(--bg-soft); color: var(--ink); }
+  .nav .btn { padding: 10px 18px; font-size: .92rem; }
+  .nav .btn .arrow { width: 22px; height: 22px; }
+
+  /* ---------- Hikâye ipi (kolye / collana motifi) ---------- */
+  .thread {
+    position: fixed; left: 28px; top: 50%; transform: translateY(-50%);
+    z-index: 40; display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .thread-line {
+    position: absolute; left: 50%; top: 8px; bottom: 8px; width: 2px;
+    transform: translateX(-50%); background: var(--line); border-radius: 2px; overflow: hidden;
+  }
+  .thread-fill {
+    position: absolute; left: 0; top: 0; width: 100%; height: 0%;
+    background: linear-gradient(var(--primary), var(--accent));
+    transition: height .15s linear;
+  }
+  .bead {
+    position: relative; width: 16px; height: 16px; margin: 14px 0; border-radius: 50%;
+    background: #fff; border: 2px solid var(--line); transition: all .3s;
+  }
+  .bead span {
+    position: absolute; left: 28px; top: 50%; transform: translateY(-50%) translateX(-6px);
+    white-space: nowrap; font-size: .78rem; font-weight: 700; color: var(--ink);
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius-pill);
+    padding: 4px 12px; opacity: 0; pointer-events: none; transition: all .25s;
+  }
+  .bead:hover span, .bead:focus-visible span { opacity: 1; transform: translateY(-50%); }
+  .bead.done { background: var(--primary); border-color: var(--primary); }
+  .bead.current { background: var(--accent); border-color: var(--primary); box-shadow: 0 0 0 6px var(--accent-soft); }
+
+  /* ---------- Bölümler ---------- */
+  section { position: relative; padding: clamp(90px, 12vw, 160px) 0; }
+  .chapter-tag {
+    display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px;
+    font-size: .85rem; font-weight: 700; color: var(--muted);
+  }
+  .chapter-tag b {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--ink); color: #fff; font-size: .85rem;
+  }
+  .soft { background: var(--bg-soft); }
+  .rounded-top { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+
+  /* Açılış */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 140px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+  .hero h1 { margin: 22px 0 26px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+  .hero-visual {
+    position: relative; aspect-ratio: 1; border-radius: var(--radius-lg);
+    background: radial-gradient(120% 120% at 20% 10%, #1c63f0 0%, var(--ink) 60%);
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .hero-visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-chip {
+    position: absolute; background: #fff; border-radius: var(--radius-md); padding: 14px 18px;
+    box-shadow: var(--shadow); font-size: .85rem; font-weight: 600;
+    display: flex; align-items: center; gap: 10px; animation: float 6s ease-in-out infinite;
+  }
+  .hero-chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: block; }
+  .hero-chip.c1 { left: 6%; bottom: 10%; }
+  .hero-chip.c2 { right: 6%; top: 9%; animation-delay: -3s; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+  .scroll-hint {
+    margin-top: 64px; display: inline-flex; align-items: center; gap: 12px;
+    font-size: .85rem; font-weight: 600; color: var(--muted);
+  }
+  .scroll-hint .mouse {
+    width: 22px; height: 34px; border: 2px solid var(--line); border-radius: 12px; position: relative;
+  }
+  .scroll-hint .mouse::after {
+    content: ""; position: absolute; left: 50%; top: 6px; width: 4px; height: 8px; margin-left: -2px;
+    background: var(--primary); border-radius: 2px; animation: wheel 1.6s infinite;
+  }
+  @keyframes wheel { to { transform: translateY(10px); opacity: 0; } }
+
+  /* Bölüm 1 — Sorun */
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .story-text p { font-size: 1.12rem; color: var(--muted); margin-top: 18px; max-width: 52ch; }
+  .story-text p strong { color: var(--ink); }
+  .clock {
+    font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 800; letter-spacing: -.04em; line-height: 1;
+    color: var(--ink);
+  }
+  .clock small { display: block; font-size: 1rem; letter-spacing: 0; color: var(--muted); font-weight: 600; margin-top: 8px; }
+  .notif-stack { display: flex; flex-direction: column; gap: 14px; }
+  .notif {
+    display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px -22px rgba(10,30,63,.5);
+  }
+  .notif .ic {
+    flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    background: #FFF1EA; color: var(--warn); font-weight: 800;
+  }
+  .notif b { display: block; font-size: .98rem; }
+  .notif span { font-size: .88rem; color: var(--muted); }
+  .notif time { margin-left: auto; font-size: .78rem; color: var(--muted); white-space: nowrap; }
+
+  /* Bölüm 2 — Rehber */
+  .guide-head { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: end; margin-bottom: 64px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat {
+    background: #fff; border-radius: var(--radius-md); padding: 30px 26px; border: 1px solid var(--line);
+  }
+  .stat .num { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+  .stat .num em { font-style: normal; color: var(--primary); }
+  .stat p { margin-top: 10px; color: var(--muted); font-size: .95rem; }
+  .map-card {
+    margin-top: 16px; border-radius: var(--radius-lg); background: var(--ink); color: #fff;
+    padding: clamp(28px, 4vw, 48px); display: grid; grid-template-columns: .9fr 1.1fr; gap: 32px; align-items: center;
+    overflow: hidden;
+  }
+  .map-card p { color: #B9C6DD; margin-top: 12px; }
+  .offices { display: flex; flex-direction: column; gap: 12px; }
+  .office {
+    display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: var(--radius-md);
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  }
+  .office .flag {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none;
+    background: rgba(46,196,241,.15); color: var(--accent); font-weight: 800; font-size: .8rem;
+  }
+  .office b { display: block; }
+  .office small { color: #B9C6DD; }
+
+  /* Bölüm 3 — Plan */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 64px; counter-reset: s; }
+  .step {
+    position: relative; padding: 32px 26px 30px; border-radius: var(--radius-md);
+    background: var(--bg-soft); transition: background .35s, color .35s, transform .35s;
+  }
+  .step:hover { background: var(--ink); color: #fff; transform: translateY(-6px); }
+  .step:hover p { color: #B9C6DD; }
+  .step .n {
+    width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+    background: #fff; color: var(--primary); font-weight: 800; margin-bottom: 44px;
+    box-shadow: 0 6px 20px -10px rgba(10,30,63,.4);
+  }
+  .step p { color: var(--muted); margin-top: 12px; font-size: .96rem; transition: color .35s; }
+  .step::after {
+    content: ""; position: absolute; top: 56px; right: -12px; width: 24px; height: 2px;
+    background: var(--line); z-index: 1;
+  }
+  .step:last-child::after { display: none; }
+
+  /* Bölüm 4 — Dönüşüm */
+  .compare {
+    margin-top: 56px; border-radius: var(--radius-lg); overflow: hidden; background: #fff;
+    border: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .toggle {
+    display: inline-flex; padding: 6px; border-radius: var(--radius-pill); background: var(--bg-soft);
+    margin: 28px 28px 0;
+  }
+  .toggle button {
+    border: 0; background: transparent; font-family: inherit; font-weight: 700; font-size: .95rem;
+    padding: 12px 22px; border-radius: var(--radius-pill); cursor: pointer; color: var(--muted);
+    transition: all .25s;
+  }
+  .toggle button.on { background: var(--ink); color: #fff; }
+  .panes { display: grid; }
+  .pane {
+    grid-area: 1 / 1; padding: 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .45s;
+  }
+  .pane.on { opacity: 1; visibility: visible; transform: none; }
+  .pane .cell { border-radius: var(--radius-md); padding: 26px; }
+  .pane.before .cell { background: #FFF6F1; }
+  .pane.after .cell { background: var(--accent-soft); }
+  .cell .big { font-size: 2.2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+  .pane.before .big { color: var(--warn); }
+  .pane.after .big { color: var(--primary); }
+  .cell p { margin-top: 8px; color: var(--muted); font-size: .95rem; }
+  .compare-note { padding: 0 28px 24px; font-size: .8rem; color: var(--muted); }
+
+  .industries { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .ind {
+    position: relative; border-radius: var(--radius-lg); padding: clamp(28px, 4vw, 44px); overflow: hidden;
+    min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff;
+  }
+  .ind.process { background: linear-gradient(160deg, var(--primary) 0%, var(--ink) 85%); }
+  .ind.discrete { background: linear-gradient(160deg, #13305f 0%, var(--ink) 85%); }
+  .ind .label { position: absolute; top: 28px; left: clamp(28px, 4vw, 44px); font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .ind h3 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); }
+  .ind p { color: #C8D4EA; margin-top: 10px; max-width: 42ch; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tags span {
+    padding: 8px 14px; border-radius: var(--radius-pill); font-size: .85rem; font-weight: 600;
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+  }
+  .ind svg.deco { position: absolute; right: -40px; top: -40px; width: 260px; opacity: .22; }
+
+  /* Bölüm 5 — collana ağı */
+  .network { display: grid; grid-template-columns: .95fr 1.05fr; gap: 56px; align-items: center; }
+  .necklace-wrap {
+    position: relative; aspect-ratio: 1; border-radius: var(--radius-lg); background: var(--bg-soft);
+    display: grid; place-items: center;
+  }
+  .necklace-wrap svg { width: 88%; height: 88%; overflow: visible; }
+  .necklace-wrap .n-bead { transition: r .3s; }
+  .center-label {
+    position: absolute; text-align: center; font-weight: 800; font-size: 1.4rem; letter-spacing: -.02em;
+  }
+  .center-label small { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+  .net-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 36px; }
+  .net-stats div { padding: 22px; border-radius: var(--radius-md); border: 1px solid var(--line); }
+  .net-stats b { display: block; font-size: 2rem; font-weight: 800; letter-spacing: -.03em; color: var(--primary); line-height: 1.1; }
+  .net-stats span { color: var(--muted); font-size: .92rem; }
+
+  /* Epilog — CTA */
+  .epilogue { padding-bottom: 0; }
+  .cta {
+    border-radius: var(--radius-lg); background: var(--ink); color: #fff; overflow: hidden; position: relative;
+    padding: clamp(40px, 7vw, 96px); display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center;
+  }
+  .cta::before {
+    content: ""; position: absolute; width: 520px; height: 520px; right: -160px; top: -200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(46,196,241,.35), transparent 65%);
+  }
+  .cta h2 { position: relative; }
+  .cta p { color: #B9C6DD; margin-top: 18px; font-size: 1.1rem; position: relative; }
+  .form { position: relative; display: flex; flex-direction: column; gap: 12px; }
+  .form input, .form select, .form textarea {
+    width: 100%; font-family: inherit; font-size: 1rem; color: #fff;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16);
+    border-radius: 16px; padding: 16px 18px; outline: none; transition: border-color .2s;
+  }
+  .form select option { color: var(--ink); }
+  .form textarea { resize: vertical; min-height: 96px; }
+  .form input::placeholder, .form textarea::placeholder { color: #8FA0BF; }
+  .form input:focus, .form select:focus, .form textarea:focus { border-color: var(--accent); }
+  .form .btn { justify-content: center; margin-top: 4px; }
+  .form-ok { display: none; padding: 16px 18px; border-radius: 16px; background: rgba(46,196,241,.15); color: #fff; font-weight: 600; }
+
+  footer { padding: 72px 0 40px; }
+  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+  .foot h4 { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .foot ul { list-style: none; display: flex; flex-direction: column; gap: 8px; font-weight: 500; }
+  .foot ul a:hover { color: var(--primary); }
+  .foot p { color: var(--muted); margin-top: 14px; max-width: 34ch; }
+  .legal { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 28px; font-size: .85rem; color: var(--muted); }
+
+  /* ---------- Scroll animasyonları ---------- */
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+  .notif.reveal { transform: translateX(40px); }
+  .notif.reveal.in { transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1360px) { .thread { display: none; } }
+  @media (max-width: 1100px) { .nav-links { display: none; } }
+  @media (max-width: 960px) {
+    .hero-grid, .problem-grid, .guide-head, .map-card, .network, .cta { grid-template-columns: 1fr; }
+    .hero-visual { max-width: 520px; }
+    .stats, .steps { grid-template-columns: 1fr 1fr; }
+    .step::after { display: none; }
+    .pane { grid-template-columns: 1fr; }
+    .industries { grid-template-columns: 1fr; }
+    .foot { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .stats, .steps, .net-stats { grid-template-columns: 1fr; }
+    .foot { grid-template-columns: 1fr; }
+    .nav-inner { padding-left: 16px; }
+    .nav .btn span.t { display: none; }
+    .notif time { display: none; }
+    .toggle { margin: 20px 20px 0; }
+    .pane { padding: 20px; }
+    .compare-note { padding: 0 20px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAVİGASYON ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo" aria-label="b4dynamics ana sayfa">
+      <span class="logo-mark">b4</span>b4dynamics
+    </a>
+    <ul class="nav-links">
+      <li><a href="#sorun">Hikâye</a></li>
+      <li><a href="#rehber">Biz kimiz</a></li>
+      <li><a href="#plan">Yöntem</a></li>
+      <li><a href="#donusum">Sektörler</a></li>
+      <li><a href="#ag">collana</a></li>
+    </ul>
+    <a href="#iletisim" class="btn btn-primary"><span class="t">Hikâyenizi anlatın</span><span class="arrow">→</span></a>
+  </div>
+</header>
+
+<!-- ============ HİKÂYE İPİ (sol kenar ilerleme) ============ -->
+<nav class="thread" aria-label="Hikâye bölümleri">
+  <div class="thread-line"><div class="thread-fill" id="threadFill"></div></div>
+  <a class="bead" href="#top" data-target="top"><span>Başlangıç</span></a>
+  <a class="bead" href="#sorun" data-target="sorun"><span>01 · Sorun</span></a>
+  <a class="bead" href="#rehber" data-target="rehber"><span>02 · Rehber</span></a>
+  <a class="bead" href="#plan" data-target="plan"><span>03 · Plan</span></a>
+  <a class="bead" href="#donusum" data-target="donusum"><span>04 · Dönüşüm</span></a>
+  <a class="bead" href="#ag" data-target="ag"><span>05 · Güçlü bir ağ</span></a>
+  <a class="bead" href="#iletisim" data-target="iletisim"><span>06 · Sizin bölümünüz</span></a>
+</nav>
+
+<main>
+
+<!-- ============ AÇILIŞ ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow reveal">Microsoft Dynamics 365 · 2008'den beri</span>
+      <h1 class="reveal d1">Her büyük dönüşüm, <span class="hl-grad">tek bir sabahla</span> başlar.</h1>
+      <p class="lead reveal d2">Bu, dağınık tablolardan akan süreçlere uzanan bir hikâye. Başrolde siz varsınız — biz ise yol boyunca yanınızda yürüyen rehberiz.</p>
+      <div class="hero-actions reveal d3">
+        <a href="#sorun" class="btn btn-primary">Hikâyeye başla <span class="arrow">↓</span></a>
+        <a href="#iletisim" class="btn btn-ghost">Bizimle konuşun <span class="arrow">→</span></a>
+      </div>
+      <div class="scroll-hint reveal d4"><span class="mouse"></span> Kaydırın — hikâye ilerledikçe ip doluyor</div>
+    </div>
+
+    <div class="hero-visual reveal d2" aria-hidden="true">
+      <!-- Birbirine bağlı boncuklar: süreçler, veriler, insanlar -->
+      <svg viewBox="0 0 400 400" fill="none">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2EC4F1"/><stop offset="1" stop-color="#1454D9"/>
+          </linearGradient>
+        </defs>
+        <path id="heroPath" d="M -20 300 C 80 120, 160 360, 220 200 S 360 60, 430 140"
+              stroke="url(#g1)" stroke-width="2.5" stroke-dasharray="6 8" opacity=".8">
+          <animate attributeName="stroke-dashoffset" from="0" to="-140" dur="6s" repeatCount="indefinite"/>
+        </path>
+        <g fill="#fff">
+          <circle cx="52" cy="210" r="10" opacity=".35"/>
+          <circle cx="128" cy="236" r="14" opacity=".55"/>
+          <circle cx="220" cy="200" r="20" fill="url(#g1)"/>
+          <circle cx="300" cy="118" r="14" opacity=".7"/>
+          <circle cx="372" cy="104" r="10" opacity=".5"/>
+        </g>
+        <circle cx="220" cy="200" r="36" stroke="#2EC4F1" stroke-opacity=".4">
+          <animate attributeName="r" values="26;46;26" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="stroke-opacity" values=".6;0;.6" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <g stroke="#fff" stroke-opacity=".08">
+          <path d="M0 80H400M0 160H400M0 240H400M0 320H400M80 0V400M160 0V400M240 0V400M320 0V400"/>
+        </g>
+      </svg>
+      <div class="hero-chip c1"><i></i> Finans ↔ Üretim ↔ Kalite: tek kaynak</div>
+      <div class="hero-chip c2"><i style="background:#1454D9"></i> Doğrulanmış süreç · GxP</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BÖLÜM 1 — SORUN ============ -->
+<section id="sorun" class="soft rounded-top" data-chapter>
+  <div class="wrap problem-grid">
+    <div class="story-text">
+      <div class="chapter-tag reveal"><b>01</b> Bölüm bir — Sorun</div>
+      <div class="clock reveal d1">Pazartesi, 07:40<small>Bir ilaç üreticisinde, sıradan bir hafta başı.</small></div>
+      <p class="reveal d2">Üretim müdürü Elif bilgisayarını açıyor. Kahvesi daha soğumadan ekran bildirimlerle doluyor. Stok rakamları üretimdekiyle tutmuyor, finans başka bir tablodan konuşuyor, kalite ekibi ise yaklaşan denetim için <strong>kanıt arıyor.</strong></p>
+      <p class="reveal d3">Şirket büyümüş; ama sistemler aynı hızla büyümemiş. Her departmanın kendi “doğrusu” var. <strong>Elif'in asıl işi üretmek — fakat günlerinin yarısı veri kovalamakla geçiyor.</strong></p>
+      <p class="reveal d4" style="font-size:.85rem">* Elif, müşterilerimizin sıkça yaşadığı durumlardan derlenmiş temsili bir karakterdir.</p>
+    </div>
+
+    <div class="notif-stack" aria-label="Sabah bildirimleri">
+      <div class="notif reveal"><div class="ic">!</div><div><b>stok_sayim_v17_SON_final.xlsx</b><span>3 farklı sürüm, 3 farklı rakam.</span></div><time>07:41</time></div>
+      <div class="notif reveal d1"><div class="ic">⏱</div><div><b>Denetime 14 gün kaldı</b><span>Parti izlenebilirlik raporu hâlâ elle hazırlanıyor.</span></div><time>07:43</time></div>
+      <div class="notif reveal d2"><div class="ic">≠</div><div><b>Finans ↔ Üretim uyuşmazlığı</b><span>Ay sonu kapanışı yine gecikecek.</span></div><time>07:46</time></div>
+      <div class="notif reveal d3"><div class="ic">✉</div><div><b>İstanbul ofisinden e-posta</b><span>“Almanya'daki rakamlar bizimkilerle aynı mı?”</span></div><time>07:52</time></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BÖLÜM 2 — REHBER ============ -->
+<section id="rehber" class="soft" data-chapter style="padding-top:0">
+  <div class="wrap">
+    <div class="guide-head">
+      <div>
+        <div class="chapter-tag reveal"><b>02</b> Bölüm iki — Rehber</div>
+        <h2 class="reveal d1">Her kahramanın bir <span class="hl">rehbere</span> ihtiyacı vardır.</h2>
+      </div>
+      <p class="lead reveal d2">b4dynamics, 2008'den bu yana üretim şirketlerinin Microsoft Dynamics 365 yolculuğunda yanında. Süreçlerinizi önce anlıyor, sonra dijitalleştiriyoruz — özellikle kuralların sıkı, hata payının sıfır olduğu sektörlerde.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal"><div class="num" data-count="2008">2008</div><p>Yılından beri ERP &amp; CRM danışmanlığı</p></div>
+      <div class="stat reveal d1"><div class="num"><span data-count="50">50</span><em>+</em></div><p>Microsoft ekosisteminde uzman</p></div>
+      <div class="stat reveal d2"><div class="num" data-count="3">3</div><p>Ülke: Almanya, Türkiye, ABD</p></div>
+      <div class="stat reveal d3"><div class="num" data-count="2">2</div><p>Odak: proses &amp; kesikli üretim</p></div>
+    </div>
+
+    <div class="map-card reveal">
+      <div>
+        <h3 style="font-size:clamp(1.5rem,2.6vw,2.1rem)">Üç kıta saat dilimi, tek ekip.</h3>
+        <p>Uluslararası projelerde aynı dili konuşan, aynı veriye bakan bir ekip. Yerel mevzuatı bilen danışmanlar, küresel ölçekte çalışan çözümler.</p>
+      </div>
+      <div class="offices">
+        <div class="office"><div class="flag">DE</div><div><b>Hüfingen, Almanya</b><small>Genel merkez</small></div></div>
+        <div class="office"><div class="flag">TR</div><div><b>İstanbul, Türkiye</b><small>Danışmanlık &amp; geliştirme</small></div></div>
+        <div class="office"><div class="flag">US</div><div><b>Denver, ABD</b><small>Kuzey Amerika projeleri</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BÖLÜM 3 — PLAN ============ -->
+<section id="plan" data-chapter>
+  <div class="wrap">
+    <div class="chapter-tag reveal"><b>03</b> Bölüm üç — Plan</div>
+    <h2 class="reveal d1" style="max-width:18ch">Kaos yerine, <span class="hl">dört net adım.</span></h2>
+    <p class="lead reveal d2" style="margin-top:20px">Elif'in ihtiyacı yeni bir yazılım değil; güvenebileceği bir yol haritasıydı. Her projede aynı şeffaf yöntemi izliyoruz.</p>
+
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>Anla</h3><p>Süreçlerinizi atölyede, sahada ve ekiplerinizle birlikte haritalıyoruz. Önce “neden”, sonra “nasıl”.</p></div>
+      <div class="step reveal d1"><div class="n">2</div><h3>Tasarla</h3><p>Dynamics 365 Finance &amp; Operations, Business Central ya da CRM — ihtiyacınıza göre ölçeklenen mimari.</p></div>
+      <div class="step reveal d2"><div class="n">3</div><h3>Uygula &amp; doğrula</h3><p>Geçiş, entegrasyon (DMS, PLM, MES, LIMS, EDI) ve GxP ortamında bilgisayarlı sistem validasyonu.</p></div>
+      <div class="step reveal d3"><div class="n">4</div><h3>Büyüt</h3><p>Anahtar kullanıcı eğitimleri, buluta geçiş ve canlı sonrası destekle sistem sizinle birlikte büyür.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BÖLÜM 4 — DÖNÜŞÜM ============ -->
+<section id="donusum" class="soft" data-chapter>
+  <div class="wrap">
+    <div class="chapter-tag reveal"><b>04</b> Bölüm dört — Dönüşüm</div>
+    <h2 class="reveal d1" style="max-width:20ch">Aynı pazartesi. <span class="hl">Bambaşka bir sabah.</span></h2>
+    <p class="lead reveal d2" style="margin-top:20px">Aylar sonra Elif yine 07:40'ta bilgisayarını açıyor. Bu kez ekranda bildirim yağmuru yok — tek bir panel, tek bir doğru var.</p>
+
+    <div class="compare reveal">
+      <div class="toggle" role="tablist" aria-label="Önce ve sonra">
+        <button class="" role="tab" aria-selected="false" data-pane="before">Önce</button>
+        <button class="on" role="tab" aria-selected="true" data-pane="after">Sonra</button>
+      </div>
+      <div class="panes">
+        <div class="pane before" data-pane="before">
+          <div class="cell"><div class="big">Dağınık</div><p>Departman başına ayrı tablo, ayrı gerçek.</p></div>
+          <div class="cell"><div class="big">Elle</div><p>İzlenebilirlik ve denetim kanıtları kopyala-yapıştırla hazırlanıyor.</p></div>
+          <div class="cell"><div class="big">Gecikmeli</div><p>Ay sonu kapanışı ve raporlar günlerce sürüyor.</p></div>
+        </div>
+        <div class="pane after on" data-pane="after">
+          <div class="cell"><div class="big">Tek kaynak</div><p>Finans, üretim, kalite ve satış aynı veriye bakıyor.</p></div>
+          <div class="cell"><div class="big">Denetime hazır</div><p>Doğrulanmış süreçler ve uçtan uca parti izlenebilirliği.</p></div>
+          <div class="cell"><div class="big">Anlık</div><p>Almanya ve İstanbul aynı rakamı, aynı anda görüyor.</p></div>
+        </div>
+      </div>
+      <p class="compare-note">Temsili senaryo. Somut sonuçlar her projede ortak hedeflerle birlikte tanımlanır.</p>
+    </div>
+
+    <div class="industries">
+      <div class="ind process reveal">
+        <svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-width="2"><circle cx="100" cy="100" r="40"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="98"/></svg>
+        <span class="label">Proses üretim</span>
+        <h3>Hata payının sıfır olduğu yerde.</h3>
+        <p>GxP gereklilikleri, validasyon ve parti yönetimi — Dynamics 365'i regülasyona tabi süreçlere göre genişletiyoruz.</p>
+        <div class="tags"><span>İlaç</span><span>Kimya</span><span>Yaşam bilimleri</span></div>
+      </div>
+      <div class="ind discrete reveal d1">
+        <svg class="deco" viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-width="2"><rect x="30" y="30" width="140" height="140" rx="24"/><rect x="60" y="60" width="80" height="80" rx="16"/></svg>
+        <span class="label">Kesikli üretim</span>
+        <h3>Karmaşık ürün, sade süreç.</h3>
+        <p>Varyantlardan ürün ağaçlarına, projeye göre üretimden servis süreçlerine kadar uçtan uca görünürlük.</p>
+        <div class="tags"><span>Tekstil</span><span>Makine imalatı</span><span>Tesis mühendisliği</span><span>Medikal cihaz</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BÖLÜM 5 — collana AĞI ============ -->
+<section id="ag" data-chapter>
+  <div class="wrap network">
+    <div class="necklace-wrap reveal" aria-hidden="true">
+      <svg viewBox="0 0 400 400" id="necklace"></svg>
+      <div class="center-label">collana<small>IT Group</small></div>
+    </div>
+    <div>
+      <div class="chapter-tag reveal"><b>05</b> Bölüm beş — Güçlü bir ağ</div>
+      <h2 class="reveal d1">Bir kolyedeki <span class="hl">en parlak boncuk</span> bile ipe ihtiyaç duyar.</h2>
+      <p class="lead reveal d2" style="margin-top:20px">İtalyanca'da “collana” kolye demek. 2024'ten bu yana b4dynamics, ERP'den yapay zekâya uzanan uzmanlıkları bir araya getiren collana IT Group'un parçası. Hikâyeniz büyüdüğünde, arkanızda koca bir ağ var.</p>
+      <div class="net-stats">
+        <div class="reveal"><b>10</b><span>Grup şirketi</span></div>
+        <div class="reveal d1"><b>500+</b><span>Uzman</span></div>
+        <div class="reveal d2"><b>1000+</b><span>Müşteri</span></div>
+        <div class="reveal d3"><b>12</b><span>Odak sektör</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EPİLOG — CTA ============ -->
+<section id="iletisim" class="epilogue" data-chapter>
+  <div class="wrap">
+    <div class="cta reveal">
+      <div>
+        <div class="chapter-tag" style="color:#B9C6DD"><b style="background:var(--primary)">06</b> Epilog — Sizin bölümünüz</div>
+        <h2>Hikâyeniz şu an <span class="hl-grad">hangi bölümde?</span></h2>
+        <p>Pazartesi sabahlarınızı anlatın. Gerisini birlikte yazalım — ilk görüşme, sorunun ne olduğunu anlamakla başlar.</p>
+      </div>
+      <form class="form" id="contactForm">
+        <input type="text" name="name" placeholder="Adınız soyadınız" required>
+        <input type="email" name="email" placeholder="İş e-postanız" required>
+        <select name="chapter" aria-label="Şu an hangi bölümdesiniz?">
+          <option>Bölüm 1 — Sorunu yaşıyoruz</option>
+          <option>Bölüm 3 — Plan arıyoruz</option>
+          <option>Bölüm 4 — Dönüşümdeyiz, destek lazım</option>
+        </select>
+        <textarea name="message" placeholder="Pazartesi sabahlarınız nasıl geçiyor?"></textarea>
+        <button type="submit" class="btn btn-light">Hikâyemi gönder <span class="arrow">→</span></button>
+        <div class="form-ok" id="formOk">Teşekkürler! Hikâyenizin bir sonraki bölümünü birlikte yazmak için en kısa sürede dönüş yapacağız.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#top" class="logo"><span class="logo-mark">b4</span>b4dynamics</a>
+        <p>Microsoft Dynamics 365 ile üretim şirketlerinin dönüşüm hikâyesini birlikte yazıyoruz. collana IT Group'un bir parçası.</p>
+      </div>
+      <div><h4>Hikâye</h4><ul><li><a href="#sorun">Sorun</a></li><li><a href="#rehber">Rehber</a></li><li><a href="#plan">Plan</a></li><li><a href="#donusum">Dönüşüm</a></li></ul></div>
+      <div><h4>Sektörler</h4><ul><li><a href="#donusum">İlaç &amp; kimya</a></li><li><a href="#donusum">Yaşam bilimleri</a></li><li><a href="#donusum">Tekstil</a></li><li><a href="#donusum">Makine &amp; medikal</a></li></ul></div>
+      <div><h4>Ofisler</h4><ul><li>Hüfingen</li><li>İstanbul</li><li>Denver</li></ul></div>
+    </div>
+    <div class="legal"><span>© <span id="yr"></span> b4dynamics GmbH</span><span>Künye · Gizlilik · Çerezler</span></div>
+  </div>
+</footer>
+
+<script>
+  // Scroll ile görünür olma
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Hikâye ipi: ilerleme + aktif boncuk + nav vurgusu
+  const fill = document.getElementById('threadFill');
+  const beads = [...document.querySelectorAll('.bead')];
+  const navLinks = [...document.querySelectorAll('.nav-links a')];
+  const sections = beads.map(b => document.getElementById(b.dataset.target));
+  function onScroll() {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    fill.style.height = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+    let current = 0;
+    sections.forEach((s, i) => { if (s.getBoundingClientRect().top < innerHeight * 0.45) current = i; });
+    beads.forEach((b, i) => {
+      b.classList.toggle('done', i < current);
+      b.classList.toggle('current', i === current);
+    });
+    const id = sections[current].id;
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Sayaç animasyonu
+  const counters = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, end = +el.dataset.count;
+      const start = end > 1000 ? end - 40 : 0, dur = 1400, t0 = performance.now();
+      const tick = t => {
+        const p = Math.min((t - t0) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(start + (end - start) * eased);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counters.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach(el => counters.observe(el));
+
+  // Önce / Sonra
+  document.querySelectorAll('.toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.pane;
+      document.querySelectorAll('.toggle button').forEach(b => {
+        const on = b === btn; b.classList.toggle('on', on); b.setAttribute('aria-selected', on);
+      });
+      document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.dataset.pane === k));
+    });
+  });
+
+  // collana kolyesi: 10 boncuk, biri b4dynamics
+  (function () {
+    const svg = document.getElementById('necklace'), ns = 'http://www.w3.org/2000/svg';
+    const cx = 200, cy = 200, r = 150, n = 10;
+    const ring = document.createElementNS(ns, 'circle');
+    Object.entries({ cx, cy, r, fill: 'none', stroke: '#DCE3EE', 'stroke-width': 2 }).forEach(([k, v]) => ring.setAttribute(k, v));
+    svg.appendChild(ring);
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      const isUs = i === 0;
+      const c = document.createElementNS(ns, 'circle');
+      Object.entries({ cx: x, cy: y, r: isUs ? 26 : 14, fill: isUs ? '#1454D9' : '#fff',
+        stroke: isUs ? '#2EC4F1' : '#0A1E3F', 'stroke-width': isUs ? 6 : 2 }).forEach(([k, v]) => c.setAttribute(k, v));
+      c.classList.add('n-bead');
+      svg.appendChild(c);
+      if (isUs) {
+        const t = document.createElementNS(ns, 'text');
+        Object.entries({ x, y: y + 5, 'text-anchor': 'middle', fill: '#fff', 'font-size': 14, 'font-weight': 800,
+          'font-family': 'Plus Jakarta Sans, sans-serif' }).forEach(([k, v]) => t.setAttribute(k, v));
+        t.textContent = 'b4';
+        svg.appendChild(t);
+      }
+    }
+  })();
+
+  // Form (arka uç bağlanana kadar yalnızca teşekkür mesajı gösterir)
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    e.target.querySelectorAll('input, select, textarea, button').forEach(el => el.style.display = 'none');
+    document.getElementById('formOk').style.display = 'block';
+  });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
