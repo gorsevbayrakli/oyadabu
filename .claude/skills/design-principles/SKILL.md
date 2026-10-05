@@ -1,12 +1,12 @@
 ---
 name: design-principles
-description: Görsel/imaj, poster, sosyal medya görseli, slayt, UI ekranı, ikon, illüstrasyon veya herhangi bir kompozisyon oluştururken ya da mevcut bir tasarımı değerlendirirken uygulanacak temel tasarım prensipleri (Emphasis, Contrast, Alignment, Balance, Movement, Proportion, Unity, Repetition, Rhythm, Hierarchy, Negative Space, Variety, Proximity, Pattern ...). Görsel üreten her işte (Canva, Figma, HTML/SVG, image generation prompt'u) önce bu skill'i yükle.
+description: 14 temel tasarım prensibi (Emphasis, Contrast, Alignment, Balance, Movement, Proportion, Unity, Repetition, Rhythm, Hierarchy, Negative Space, Variety, Proximity, Pattern) ve uygulama kontrol listesi. Herhangi bir görsel, imaj, poster, afiş, logo, sosyal medya postu, carousel, banner, slayt/sunum, web sayfası, landing page, UI/uygulama ekranı, ikon, illüstrasyon, infografik, HTML/SVG/CSS çıktısı, Canva/Figma tasarımı veya görsel üretim (image generation) prompt'u oluştururken, düzenlerken ya da bir tasarımı değerlendirirken/eleştirirken MUTLAKA kullan — kullanıcı prensiplerden bahsetmese bile. Use for ANY visual design, layout, or image creation task.
 ---
 
 # Tasarım Prensipleri
 
-Kaynak: @346eur "Design Principles" carousel'i (2026). Bir görsel oluştururken
-aşağıdaki prensiplerin **her birini** bilinçli olarak ele al. Hepsini aynı
+Kaynak: @346eur "Design Principles" carousel'i (2026). **Her** tasarım işinde —
+kullanıcı ayrıca istemese bile — aşağıdaki 14 prensibin **her birini** bilinçli olarak ele al. Hepsini aynı
 yoğunlukta kullanmak zorunda değilsin, ama her biri için bir karar ver.
 
 ## Çalışma şekli
@@ -201,8 +201,6 @@ dekoratif** olabilir.
 - Repetition / Rhythm / Pattern farkı: Repetition = öğeyi yeniden kullanmak;
   Rhythm = tekrarın yarattığı tempo/akış; Pattern = tekrarın oluşturduğu sabit,
   yüzey kaplayan düzen.
-
-<!-- Yeni prensipler buraya eklenecek: 15., 16., ... (aynı formatta) -->
 
 ## Örnek görsel dili (kaynak seriden)
 
