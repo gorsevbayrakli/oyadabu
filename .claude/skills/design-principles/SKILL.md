@@ -1,6 +1,6 @@
 ---
 name: design-principles
-description: Görsel/imaj, poster, sosyal medya görseli, slayt, UI ekranı, ikon, illüstrasyon veya herhangi bir kompozisyon oluştururken ya da mevcut bir tasarımı değerlendirirken uygulanacak temel tasarım prensipleri (Emphasis, Contrast, Alignment, Balance, Movement ...). Görsel üreten her işte (Canva, Figma, HTML/SVG, image generation prompt'u) önce bu skill'i yükle.
+description: Görsel/imaj, poster, sosyal medya görseli, slayt, UI ekranı, ikon, illüstrasyon veya herhangi bir kompozisyon oluştururken ya da mevcut bir tasarımı değerlendirirken uygulanacak temel tasarım prensipleri (Emphasis, Contrast, Alignment, Balance, Movement, Proportion, Unity, Repetition, Rhythm, Hierarchy ...). Görsel üreten her işte (Canva, Figma, HTML/SVG, image generation prompt'u) önce bu skill'i yükle.
 ---
 
 # Tasarım Prensipleri
@@ -81,7 +81,72 @@ bilgiyi takip etmeyi kolaylaştırır.
 
 ---
 
-<!-- Yeni prensipler buraya eklenecek: 06., 07., ... (aynı formatta) -->
+## 06. Proportion (Oran) — *Scale Relationships*
+
+Tasarımdaki öğeler arasındaki **boyut ilişkisini** tanımlayan prensip. Kompozisyonun
+parçalarının birbirine göre dengeli ve doğal hissetmesini sağlar. Oranlar kasıtlı
+olduğunda önemi vurgular (ör. küçük açıklamalara kıyasla büyük başlıklar) ve
+düzen genelinde uyum yaratır.
+
+- Örnek: Büyük dolu bir dikdörtgenin yanında, tabanı hizalı **küçük bir çerçeve kare**.
+- Uygula: Tutarlı bir ölçek kullan (ör. tipografide 1.25 / 1.333 / 1.5 oranlı type scale,
+  boşluklarda 4/8 px katları). Öğe boyutu önemiyle orantılı olsun.
+- Kaçın: Birbirine çok yakın boyutlar (ne eşit ne farklı), rastgele seçilmiş ölçüler.
+
+## 07. Unity (Bütünlük) — *Cohesive Whole*
+
+Tasarımdaki tüm öğelerin **birbirine bağlı ve aynı sistemin parçası** hissetmesini
+sağlama prensibi. **Renk, yazı tipi, boşluk ve stil tutarlılığı** ile elde edilir;
+böylece hiçbir şey yersiz durmaz. Bütünlük varsa tasarım ayrı parçaların toplamı
+değil, tek ve eksiksiz bir mesaj olarak iletişim kurar.
+
+- Örnek: Aynı boyut, aynı kontur, eşit aralıklı 3×3 çerçeve kare ızgarası.
+- Uygula: Sınırlı palet (2–3 ana renk), en fazla 2 font ailesi, tek kontur kalınlığı,
+  tek köşe yarıçapı, tek ikon stili. Seri görsellerde (carousel) aynı şablonu koru.
+- Kaçın: Farklı kaynaklardan toplanmış, stili uyuşmayan öğeler.
+- Not: Unity tek başına sıkıcı olabilir — **Emphasis** ile birlikte kullan
+  (seri bunu 01'de gösteriyor: aynı ızgara + tek daire).
+
+## 08. Repetition (Tekrar) — *Consistent Elements*
+
+Görsel öğelerin — **renkler, şekiller, fontlar veya desenler** — tasarım boyunca
+yeniden kullanılması. Tutarlılık oluşturur, kimliği güçlendirir ve düzeni birleşik
+ve bütünlüklü hissettiren bir ritim yaratır.
+
+- Örnek: Dolu daire sırası ve çerçeve kare sırası dönüşümlü olarak tekrar ediyor.
+- Uygula: Marka rengi, başlık stili, buton/etiket biçimi, logo yeri gibi öğeleri
+  her görselde aynı şekilde tekrarla. Bir görsel motif seçip birkaç kez kullan.
+- Kaçın: Her öğenin "tek seferlik" tasarlanması.
+
+## 09. Rhythm (Ritim) — *Visual Beat*
+
+Tekrarlanan öğeler aracılığıyla **hareket ve akış hissi** yaratma prensibi.
+Şekilleri, renkleri veya çizgileri bir desen içinde aralıklandırıp düzenleyerek
+ritim, izleyicinin gözünü tasarım boyunca yönlendiren bir **görsel tempo** kurar.
+
+- Örnek: Her satır aynı kare+daire birimini farklı varyasyonla tekrarlar
+  (boş/boş → dolu kare/açık daire → boş kare/dolu daire) — tekrar + değişim = ritim.
+- Uygula: Tekrar eden birimi küçük ve öngörülebilir değişimlerle çeşitlendir
+  (dolu/boş, renk dönüşümü, boyut ilerlemesi). Aralıkları düzenli tut; carousel'de
+  zemin rengini slayttan slayta değiştirmek de ritimdir.
+- Kaçın: Hiç değişmeyen tekrar (monoton) ya da kuralsız değişim (kaotik).
+- Repetition'dan farkı: Repetition **aynılık**, Rhythm **tekrarın içindeki düzenli değişim ve akış**.
+
+## 10. Hierarchy (Hiyerarşi) — *Priority Order*
+
+Öğeleri **önem derecelerini gösterecek şekilde** düzenleme prensibi. Bazı parçaları
+önce öne çıkararak — **boyut, renk, yerleşim veya tipografi** ile — destekleyici
+detayların ardından gelmesini sağlar ve izleyicinin gözünü yönlendirir. Net bir
+hiyerarşi bilginin kolay taranmasını ve ana mesajın anında anlaşılmasını sağlar.
+
+- Örnek: Büyük dolu kare (1. seviye) → uzun çerçeve dikdörtgen (2.) → küçük kareler
+  ve daire (3.). Boyut ve doluluk önceliği belirler.
+- Uygula: En az 3 seviye tanımla: birincil (başlık/odak), ikincil (alt başlık/görsel),
+  üçüncül (gövde, açıklama, logo, kaynak). Her seviye bir öncekinden belirgin şekilde
+  zayıf olsun. "Bulanıklaştırma testi": görseli bulanık düşün — sıralama hâlâ okunuyor mu?
+- Kaçın: Aynı ağırlıkta yarışan iki başlık; metnin tamamının aynı boyutta olması.
+
+<!-- Yeni prensipler buraya eklenecek: 11., 12., ... (aynı formatta) -->
 
 ## Örnek görsel dili (kaynak seriden)
 
@@ -102,3 +167,8 @@ Seri, prensipleri anlatırken kendisi de bu prensipleri uygular — referans sti
 - [ ] **Alignment:** Tüm öğeler ortak bir ızgaraya/eksene bağlı mı? Boşluklar tutarlı mı?
 - [ ] **Balance:** Görsel ağırlık dengeli mi (simetrik ya da bilinçli asimetrik)?
 - [ ] **Movement:** Göz hangi sırayla dolaşıyor? Bu sıra mesajın sırasıyla aynı mı?
+- [ ] **Proportion:** Boyutlar önemle orantılı mı? Tutarlı bir ölçek (type/spacing scale) var mı?
+- [ ] **Unity:** Renk, font, boşluk ve stil tutarlı mı? Yersiz duran öğe var mı?
+- [ ] **Repetition:** Kimlik öğeleri (renk, başlık stili, logo yeri, motif) tekrar ediyor mu?
+- [ ] **Rhythm:** Tekrarlarda düzenli bir değişim/tempo var mı? Monoton ya da kaotik mi?
+- [ ] **Hierarchy:** En az 3 net önem seviyesi var mı? Ana mesaj anında anlaşılıyor mu?
